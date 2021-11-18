@@ -5,16 +5,17 @@ from infra.sqlalchemy.models import models
 
 
 class RepositorioProduto():
+    
     def __init__(self, db: Session):
         self.db = db
         
     def criar(self, produto: schemas.Produto):
-        db_produto = models.Produtos(nome=produto.nome,
-                                     detalhes=produto.detalhes,
+        db_produto = models.Produto(nome=produto.nome,
+                                     detalhe=produto.detalhe,
                                      preco=produto.preco,
                                      disponivel=produto.disponivel)
         self.db.add(db_produto)
-        self.db.comit()
+        self.db.commit()
         self.db.refresh(db_produto)
         return db_produto
         

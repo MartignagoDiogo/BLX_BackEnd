@@ -7,6 +7,7 @@ from infra.sqlalchemy.repositorios.produto import RepositorioProduto
 
 
 criar_db()
+
 app = FastAPI()
 
 
@@ -15,8 +16,8 @@ def listar_produtos():
     return {'listou'}
 
 @app.post('/produtos')
-async def criar_produtos(produto: Produto, db: Session = Depends(get_db)):
-    produto_criado = RepositorioProduto().criar(produto)
+def criar_produtos(produto: Produto, db: Session = Depends(get_db)):
+    produto_criado = RepositorioProduto(db).criar(produto)
     return produto_criado
 
 
@@ -60,11 +61,3 @@ async def quadrado(numero: int):
 def dobro(valor: int = 1):
     r = 2 * valor
     return {f'O dobro de {valor} é {r}' }
-
-class Usuario(BaseModel):
-    nome: str
-    valor: float
-
-@app.post('/user')
-def usuario(user: Usuario):
-    return { f'Usuario {user.nome} - camisa {user.valor} cadastrado com sucesso'}

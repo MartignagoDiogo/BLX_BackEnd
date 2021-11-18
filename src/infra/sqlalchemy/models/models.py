@@ -13,15 +13,15 @@ class Produto(Base):
     nome = Column(String)
     detalhe = Column(String)
     preco = Column(Float)
-    disponivel = Column(String)
+    disponivel = Column(Boolean)
     
-#class User(Base):
+#class Usuario(Base):
     
- #   __Tablename__ = 'usuario'
+ #   __tablename__ = 'usuario'
     
-  #  id = Column(Integer, primary_key=True, index=True)
-   # nome = Column(String)
-    #telefone = Column(String)
+#   id = Column(Integer, primary_key=True, index=True)
+#   nome = Column(String)
+#    telefone = Column(String)
      
     
 
