@@ -2,9 +2,12 @@ from pydantic import BaseModel
 from typing import Optional
 
 class Usuario(BaseModel):
-    ip: Optional[str] = None
+    id: Optional[str] = None
     nome: str
     telefone: str 
+    
+    class Config:
+        orm_mode = True
     
 class Produto(BaseModel):
     id: Optional[str] = None
