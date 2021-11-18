@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class Usuario():
+class Usuario(BaseModel):
     ip: Optional[str] = None
     nome: str
     telefone: str 
