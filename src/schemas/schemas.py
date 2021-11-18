@@ -10,14 +10,15 @@ class Produto(BaseModel):
     id: Optional[str] = None
     nome: str
     detalhe: str
-    disponivel: bool = False
+        
+    class Config:
+        orm_mode = True
+            
     
-class Pedido(BaseModel):
-    id: Optional[str] = None
-    usuario: Usuario
-    produto: Produto
-    quantidade: int
-    entrega: bool = True
-    endereço: str
-    observacoes: Optional[str] = 'Sem Observações'
+#class Pedido(BaseModel):
+#    id: Optional[str] = None
+#    quantidade: int
+#    entrega: bool = True
+#    endereço: str
+#    observacoes: Optional[str] = 'Sem Observações'
     

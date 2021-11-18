@@ -1,8 +1,34 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
+from sqlalchemy.orm.session import Session
+from infra.sqlalchemy.config.database import get_db, criar_db
+from schemas.schemas import Produto
+from infra.sqlalchemy.repositorios.produto import RepositorioProduto
 
 
+criar_db()
 app = FastAPI()
+
+
+@app.get('/produtos')
+def listar_produtos():
+    return {'listou'}
+
+@app.post('/produtos')
+async def criar_produtos(produto: Produto, db: Session = Depends(get_db)):
+    produto_criado = RepositorioProduto().criar(produto)
+    return produto_criado
+
+
+
+
+
+
+
+
+
+
+
 
 
 @app.get('/')

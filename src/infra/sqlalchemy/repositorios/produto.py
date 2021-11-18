@@ -1,7 +1,7 @@
 from pydantic.main import prepare_config
 from sqlalchemy.orm import Session
-from src.schemas import schemas
-from src.infra.sqlalchemy.models import models
+from schemas import schemas
+from infra.sqlalchemy.models import models
 
 
 class RepositorioProduto():
@@ -10,7 +10,7 @@ class RepositorioProduto():
         
     def criar(self, produto: schemas.Produto):
         db_produto = models.Produtos(nome=produto.nome,
-                                     detalhe=produto.detalhes,
+                                     detalhes=produto.detalhes,
                                      preco=produto.preco,
                                      disponivel=produto.disponivel)
         self.db.add(db_produto)
