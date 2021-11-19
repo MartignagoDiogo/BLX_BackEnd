@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status
 from pydantic import BaseModel
+from typing import List
 from sqlalchemy.orm.session import Session
 from infra.sqlalchemy.config.database import get_db, criar_db
-from schemas.schemas import Usuario, Produto
+from schemas.schemas import ProdutoSimples, Usuario, Produto
 from infra.sqlalchemy.repositorios.produto import RepositorioProduto
 from infra.sqlalchemy.repositorios.usuario import RepositorioUsuario
 
@@ -12,23 +13,23 @@ criar_db()
 app = FastAPI()
 
 
-@app.get('/produtos')
+@app.get('/produtos', status_code=status.HTTP_200_OK, response_model=List[ProdutoSimples])
 def listar_produtos(db: Session = Depends(get_db)):
     produtos = RepositorioProduto(db).listar()
     return produtos
 
-@app.post('/produtos')
+@app.post('/produtos', status_code=status.HTTP_200_OK)
 def criar_produtos(produto: Produto, db: Session = Depends(get_db)):
     produto_criado = RepositorioProduto(db).criar(produto)
     return produto_criado
 
 
-@app.post('/usuario')
+@app.post('/usuario', status_code=status.HTTP_201_CREATED)
 def criar_usuarios(usuario: Usuario, db: Session = Depends(get_db)):
     usuario_criado = RepositorioUsuario(db).criar(usuario)
     return usuario_criado
 
-@app.get('/usuarios')
+@app.get('/usuarios', status_code=status.HTTP_200_OK)
 def listar_usuarios(db: Session = Depends(get_db)):
     usuario = RepositorioUsuario(db).listar()
     return usuario
