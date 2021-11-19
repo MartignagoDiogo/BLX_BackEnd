@@ -8,7 +8,7 @@ from infra.sqlalchemy.repositorios.produto import RepositorioProduto
 from infra.sqlalchemy.repositorios.usuario import RepositorioUsuario
 
 
-criar_db()
+#criar_db()
 
 app = FastAPI()
 

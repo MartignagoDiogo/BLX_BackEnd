@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic.main import BaseModel
 from sqlalchemy import Column, String, Float, Integer
 from sqlalchemy.sql.sqltypes import Boolean
-from infra.sqlalchemy.config.database import Base
+from src.infra.sqlalchemy.config.database import Base
 
 
 class Produto(Base):
@@ -14,6 +14,7 @@ class Produto(Base):
     detalhe = Column(String)
     preco = Column(Float)
     disponivel = Column(Boolean)
+    tamanho = Column(String)
     
 class Usuario(Base):
     
