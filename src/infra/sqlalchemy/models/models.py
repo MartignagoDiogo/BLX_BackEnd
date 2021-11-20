@@ -7,6 +7,19 @@ from sqlalchemy.sql.sqltypes import Boolean
 from src.infra.sqlalchemy.config.database import Base
 
 
+class Usuario(Base):
+    
+    __tablename__ = 'usuario'
+    
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String)
+    telefone = Column(String)
+    senha = Column(String)
+    
+    produtos = relationship('Produto', back_populates='usuario')
+
+
+
 class Produto(Base):
     
     __tablename__ = 'produto'
@@ -17,19 +30,10 @@ class Produto(Base):
     preco = Column(Float)
     disponivel = Column(Boolean)
     tamanho = Column(String)
-    #usuario_id = Column(Integer, ForeignKey('usuario_id)', name="fk_usuario"))
+    usuario_id = Column(Integer, ForeignKey('usuario.id', name='fk_usuario'))
     
-    
-class Usuario(Base):
-    
-    __tablename__ = 'usuario'
-    
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String)
-    telefone = Column(String)
-    senha = Column(String)
-    
-    #produtos = relationship('Produto', back_populates='usuario')
+    usuario = relationship('Usuario', back_populates='produtos')
+
      
     
 

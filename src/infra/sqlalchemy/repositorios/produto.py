@@ -6,22 +6,24 @@ from src.infra.sqlalchemy.models import models
 
 class RepositorioProduto():
     
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self, session: Session):
+        self.session = session
         
     def criar(self, produto: schemas.Produto):
         db_produto = models.Produto(nome=produto.nome,
                                      detalhe=produto.detalhe,
                                      preco=produto.preco,
-                                     disponivel=produto.disponivel)
-        self.db.add(db_produto)
-        self.db.commit()
-        self.db.refresh(db_produto)
+                                     disponivel=produto.disponivel,
+                                     tamanho=produto.tamanho,
+                                     usuario_id=produto.usuario_id)
+        self.session.add(db_produto)
+        self.session.commit()
+        self.session.refresh(db_produto)
         return db_produto
         
         
     def listar(self):
-        produtos = self.db.query(models.Produto).all()
+        produtos = self.session.query(models.Produto).all()
         return produtos
     
     def remover(self):

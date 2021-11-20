@@ -8,30 +8,30 @@ from src.infra.sqlalchemy.repositorios.produto import RepositorioProduto
 from src.infra.sqlalchemy.repositorios.usuario import RepositorioUsuario
 
 
-criar_db()
+#criar_db()
 
 app = FastAPI()
 
 
 @app.get('/produtos', status_code=status.HTTP_200_OK, response_model=List[ProdutoSimples])
-def listar_produtos(db: Session = Depends(get_db)):
-    produtos = RepositorioProduto(db).listar()
+def listar_produtos(session: Session = Depends(get_db)):
+    produtos = RepositorioProduto(session).listar()
     return produtos
 
 @app.post('/produtos', status_code=status.HTTP_200_OK)
-def criar_produtos(produto: Produto, db: Session = Depends(get_db)):
-    produto_criado = RepositorioProduto(db).criar(produto)
+def criar_produtos(produto: Produto, session: Session = Depends(get_db)):
+    produto_criado = RepositorioProduto(session).criar(produto)
     return produto_criado
 
 
-@app.post('/usuario', status_code=status.HTTP_201_CREATED)
-def criar_usuarios(usuario: Usuario, db: Session = Depends(get_db)):
-    usuario_criado = RepositorioUsuario(db).criar(usuario)
+@app.post('/usuario', status_code=status.HTTP_201_CREATED, response_model=Usuario)
+def criar_usuarios(usuario: Usuario, session: Session = Depends(get_db)):
+    usuario_criado = RepositorioUsuario(session).criar(usuario)
     return usuario_criado
 
-@app.get('/usuarios', status_code=status.HTTP_200_OK)
-def listar_usuarios(db: Session = Depends(get_db)):
-    usuario = RepositorioUsuario(db).listar()
+@app.get('/usuarios', status_code=status.HTTP_200_OK, response_model=List[Usuario])
+def listar_usuarios(session: Session = Depends(get_db)):
+    usuario = RepositorioUsuario(session).listar1()
     return usuario
 
 
