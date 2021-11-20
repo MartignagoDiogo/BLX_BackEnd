@@ -2,13 +2,13 @@ from fastapi import FastAPI, Depends, status
 from pydantic import BaseModel
 from typing import List
 from sqlalchemy.orm.session import Session
-from infra.sqlalchemy.config.database import get_db, criar_db
-from schemas.schemas import ProdutoSimples, Usuario, Produto
-from infra.sqlalchemy.repositorios.produto import RepositorioProduto
-from infra.sqlalchemy.repositorios.usuario import RepositorioUsuario
+from src.infra.sqlalchemy.config.database import get_db, criar_db
+from src.schemas.schemas import ProdutoSimples, Usuario, Produto
+from src.infra.sqlalchemy.repositorios.produto import RepositorioProduto
+from src.infra.sqlalchemy.repositorios.usuario import RepositorioUsuario
 
 
-#criar_db()
+criar_db()
 
 app = FastAPI()
 

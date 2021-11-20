@@ -1,6 +1,8 @@
 from typing import Optional
 from pydantic.main import BaseModel
 from sqlalchemy import Column, String, Float, Integer
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import Boolean
 from src.infra.sqlalchemy.config.database import Base
 
@@ -15,6 +17,8 @@ class Produto(Base):
     preco = Column(Float)
     disponivel = Column(Boolean)
     tamanho = Column(String)
+    #usuario_id = Column(Integer, ForeignKey('usuario_id)', name="fk_usuario"))
+    
     
 class Usuario(Base):
     
@@ -23,6 +27,9 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String)
     telefone = Column(String)
+    senha = Column(String)
+    
+    #produtos = relationship('Produto', back_populates='usuario')
      
     
 

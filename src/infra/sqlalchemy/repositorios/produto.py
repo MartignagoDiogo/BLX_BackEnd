@@ -1,7 +1,7 @@
 from pydantic.main import prepare_config
 from sqlalchemy.orm import Session
-from schemas import schemas
-from infra.sqlalchemy.models import models
+from src.schemas import schemas
+from src.infra.sqlalchemy.models import models
 
 
 class RepositorioProduto():
