@@ -26,5 +26,5 @@ class RepositorioUsuario():
     
     def listar1(self):
         stmt = select(models.Usuario)
-        usuarios = self.session.execute(stmt).scalars().all()
+        usuarios = self.session.execute(stmt).scalers.all()
         return usuarios
