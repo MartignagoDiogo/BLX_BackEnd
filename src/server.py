@@ -1,15 +1,8 @@
-from fastapi import FastAPI, Depends, status
-from pydantic import BaseModel
+from fastapi import FastAPI, Depends
 from typing import List
-from sqlalchemy.orm.session import Session
-from src.infra.sqlalchemy.config.database import get_db, criar_db
-from src.schemas.schemas import ProdutoSimples, Usuario, Produto, UsuarioSimples
-from src.infra.sqlalchemy.repositorios.repositorio_produto import RepositorioProduto
-from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
+from src.infra.sqlalchemy.config.database import get_db
 from fastapi.middleware.cors import CORSMiddleware
-
-
-#criar_db()
+from src.routers import route_produto, route_usuario
 
 app = FastAPI()
 
@@ -28,42 +21,14 @@ app.add_middleware(CORSMiddleware,
                    allow_methods=["*"],
                    allow_headers=["*"])
 
-#PRODUTOS
 
-@app.get('/produtos', status_code=status.HTTP_200_OK, response_model=List[ProdutoSimples])
-def listar_produtos(session: Session = Depends(get_db)):
-    produtos = RepositorioProduto(session).listar()
-    return produtos
+#Roters Produto
 
-@app.post('/produtos', status_code=status.HTTP_200_OK)
-def criar_produtos(produto: Produto, session: Session = Depends(get_db)):
-    produto_criado = RepositorioProduto(session).criar(produto)
-    return produto_criado
+app.include_router(route_produto.route)
 
+#Roters USUARIO
 
-@app.put('/produtos/{id}', response_model=ProdutoSimples)
-def atualizar_produtos(id: int, produto: Produto, session: Session = Depends(get_db)):
-        RepositorioProduto(session).editar(id, produto)
-        produto.id = id
-        return produto
-    
-@app.delete('/produtos/{id}')   
-def remover_produtos(id: int, session: Session = Depends(get_db)):
-        RepositorioProduto(session).remover(id)
-        return 'Produto removido'
-
-
-#USUARIO
-
-@app.post('/usuario', status_code=status.HTTP_201_CREATED, response_model=Usuario)
-def criar_usuarios(usuario: Usuario, session: Session = Depends(get_db)):
-    usuario_criado = RepositorioUsuario(session).criar(usuario)
-    return usuario_criado
-
-@app.get('/usuarios', status_code=status.HTTP_200_OK, response_model=List[UsuarioSimples])
-def listar_usuarios(session: Session = Depends(get_db)):
-    usuario = RepositorioUsuario(session).listar()
-    return usuario
+app.include_router(route_usuario.route)
 
 
 
@@ -73,6 +38,7 @@ def listar_usuarios(session: Session = Depends(get_db)):
 
 
 
+#ROTAS Exemplo
 
 @app.get('/')
 async def roo():
