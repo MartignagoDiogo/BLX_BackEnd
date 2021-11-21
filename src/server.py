@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from typing import List
 from src.infra.sqlalchemy.config.database import get_db
 from fastapi.middleware.cors import CORSMiddleware
-from src.routers import route_produto, route_usuario
+from src.routers import route_produto, route_usuario, route_pedido
 
 app = FastAPI()
 
@@ -29,6 +29,10 @@ app.include_router(route_produto.route)
 #Roters USUARIO
 
 app.include_router(route_usuario.route)
+
+#Roters Pedido
+
+app.include_router(route_pedido.router)
 
 
 

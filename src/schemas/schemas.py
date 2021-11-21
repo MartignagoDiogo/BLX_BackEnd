@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from typing import List, Optional
-
 from src.infra.sqlalchemy.models.models import Produto
 
         
@@ -43,10 +42,17 @@ class Produto(BaseModel):
         orm_mode = True
             
     
-#class Pedido(BaseModel):
-#    id: Optional[str] = None
-#    quantidade: int
-#    entrega: bool = True
-#    endereço: str
-#    observacoes: Optional[str] = 'Sem Observações'
+class Pedido(BaseModel):
+    id: Optional[int] = None
+    quantidade: int
+    local_entrega: Optional[str]
+    tipo_entrega: str
+    observacao: Optional[str] = 'Sem Observações'
+    usuario_id: Optional[int]
+    produto_id: Optional[int]
     
+    usuario: Optional[UsuarioSimples]
+    produto: Optional[ProdutoSimples]
+    
+    class Config:
+        orm_mode = True
