@@ -34,6 +34,7 @@ class Produto(Base):
     usuario_id = Column(Integer, ForeignKey('usuario.id', name='fk_usuario'))
     
     usuario = relationship('Usuario', back_populates='produtos')
+   
     
 class Pedido(Base):
     __tablename__ = 'pedido'
@@ -48,5 +49,5 @@ class Pedido(Base):
     produto_id = Column(Integer, ForeignKey('produto.id', name='fk_pedido_produto'))
     
     usuario = relationship('Usuario', back_populates='pedidos')
-    usuario = relationship('Usuario')
+    produto = relationship('Produto')
     

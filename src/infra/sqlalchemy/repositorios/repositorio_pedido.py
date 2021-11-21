@@ -1,5 +1,7 @@
 from pydantic.schema import schema
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, query
+from sqlalchemy.sql.expression import select
+from sqlalchemy.sql.functions import mode
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
 from typing import List
@@ -24,11 +26,17 @@ class RepositorioPedido():
         self.session.refresh(db_pedido)
         return db_pedido
     
-    def buscar_pedido(self):
-        pass
+    def buscar_pedido_por_id(self, id: int):
+        query = select(models.Pedido).where(models.Pedido.id == id)
+        pedido = self.session.execute(query).one()
+        return pedido
     
-    def listar_meus_pedidos_id(self):
-        pass
+    def listar_meus_pedidos_id(self, usuario_id: int):
+        query = select(models.Pedido).where(models.Pedido.usuario_id == usuario_id)
+        r = self.session.execute(query).all()
+        return r
 
-    def listar_minhas_vendas_id(self):
-        pass
+    def listar_minhas_vendas_id(self, usuario_id: int):
+        query = select(models.Pedido).join_from(models.Pedido, models.Produto).where(models.Pedido.usuario_id == usuario_id)
+        r = self.session.execute(query).all()
+        return r
