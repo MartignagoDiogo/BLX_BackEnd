@@ -26,5 +26,10 @@ class RepositorioUsuario():
     
     def listar1(self):
         stmt = select(models.Usuario)
-        usuarios = self.session.execute(stmt).scalers.all()
+        usuarios = self.session.execute(stmt).scalars().all()
         return usuarios
+    
+    def buscarPorId(self, id: int):
+        consulta= select(models.Usuario).where(models.Usuario.id == id)   
+        usuario= self.session.execute(consulta).first()
+        return usuario  

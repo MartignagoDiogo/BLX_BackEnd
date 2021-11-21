@@ -1,4 +1,4 @@
-from sqlalchemy import update, delete
+from sqlalchemy import update, delete, select
 from pydantic.main import prepare_config
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import delete
@@ -25,7 +25,12 @@ class RepositorioProduto():
         
     def listar(self):
         produtos = self.session.query(models.Produto).all()
-        return produtos        
+        return produtos  
+    
+    def buscarPorId(self, id: int):
+        consulta= select(models.Produto).where(models.Produto.id == id)   
+        produto= self.session.execute(consulta).first()
+        return produto   
    
     def editar(self, id: int, produto: schemas.Produto):
         stmt_update = update(models.Produto).where(
