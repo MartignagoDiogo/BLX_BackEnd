@@ -6,12 +6,27 @@ from src.infra.sqlalchemy.config.database import get_db, criar_db
 from src.schemas.schemas import ProdutoSimples, Usuario, Produto, UsuarioSimples
 from src.infra.sqlalchemy.repositorios.repositorio_produto import RepositorioProduto
 from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
+from fastapi.middleware.cors import CORSMiddleware
 
 
 #criar_db()
 
 app = FastAPI()
 
+#CORS
+
+origins = [
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(CORSMiddleware,
+                   allow_origins=origins,
+                   allow_credentials=True,
+                   allow_methods=["*"],
+                   allow_headers=["*"])
 
 #PRODUTOS
 
