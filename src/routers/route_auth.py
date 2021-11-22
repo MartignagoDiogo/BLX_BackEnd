@@ -1,6 +1,7 @@
 from fastapi import status, APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from infra.Providers import token_provider
 from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
 from src.infra.sqlalchemy.config.database import get_db
 from src.schemas.schemas import Usuario, UsuarioSimples, LoginData
@@ -31,8 +32,10 @@ def login(login_data: LoginData, session: Session = Depends(get_db)):
     senha_valida = hash_provider.verificar_hash(senha, usuario.senha)
     if not senha_valida:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='senha ou telefone estão incorretos')
+    
     #Gerar o token JWT
-    return usuario
+    token = token_provider.criar_acess_token({'sub': usuario.telefone})
+    return {'usuario': usuario, 'acess token': token}
 
 @route.get('/usuarios', status_code=status.HTTP_200_OK, response_model=List[UsuarioSimples])
 def listar_usuarios(session: Session = Depends(get_db)):
