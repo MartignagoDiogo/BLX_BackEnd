@@ -1,6 +1,4 @@
-from fastapi import FastAPI, Depends
-from typing import List
-from src.infra.sqlalchemy.config.database import get_db
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.routers import route_produto, route_auth, route_pedido
 

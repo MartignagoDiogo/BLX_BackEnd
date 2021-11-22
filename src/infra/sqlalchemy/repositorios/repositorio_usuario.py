@@ -34,6 +34,6 @@ class RepositorioUsuario():
         usuario= self.session.execute(consulta).first()
         return usuario  
     
-    def obter_por_telefone(self, telefone):
+    def obter_por_telefone(self, telefone) -> models.Usuario:
         query =  select(models.Usuario).where(models.Usuario.telefone == telefone)
         return self.session.execute(query).scalars().first()

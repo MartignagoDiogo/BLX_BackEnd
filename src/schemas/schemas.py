@@ -16,7 +16,11 @@ class UsuarioSimples(BaseModel):
     produtos: List[ProdutoSimples] = []
     
     class Config:
-        orm_mode = True 
+        orm_mode = True
+         
+class LoginData(BaseModel):
+    senha: str
+    telefone: str
         
 class Usuario(BaseModel):
     id: Optional[int] = None

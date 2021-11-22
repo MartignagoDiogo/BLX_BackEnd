@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
 from src.infra.sqlalchemy.config.database import get_db
-from src.schemas.schemas import Usuario, UsuarioSimples
+from src.schemas.schemas import Usuario, UsuarioSimples, LoginData
 from src.infra.Providers import hash_provider
 
 route = APIRouter()
@@ -19,6 +19,20 @@ def signup(usuario: Usuario, session: Session = Depends(get_db)):
     usuario.senha = hash_provider.gerar_hash(usuario.senha)
     usuario_criado = RepositorioUsuario(session).criar(usuario)
     return usuario_criado
+
+@route.post('/token')
+def login(login_data: LoginData, session: Session = Depends(get_db)):
+    senha = login_data.senha
+    telefone = login_data.telefone
+    
+    usuario = RepositorioUsuario(session).obter_por_telefone(telefone)
+    if not usuario:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='senha ou telefone estão incorretos')
+    senha_valida = hash_provider.verificar_hash(senha, usuario.senha)
+    if not senha_valida:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='senha ou telefone estão incorretos')
+    #Gerar o token JWT
+    return usuario
 
 @route.get('/usuarios', status_code=status.HTTP_200_OK, response_model=List[UsuarioSimples])
 def listar_usuarios(session: Session = Depends(get_db)):
