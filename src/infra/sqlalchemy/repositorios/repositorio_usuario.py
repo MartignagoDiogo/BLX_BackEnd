@@ -33,3 +33,7 @@ class RepositorioUsuario():
         consulta= select(models.Usuario).where(models.Usuario.id == id)   
         usuario= self.session.execute(consulta).first()
         return usuario  
+    
+    def obter_por_telefone(self, telefone):
+        query =  select(models.Usuario).where(models.Usuario.telefone == telefone)
+        return self.session.execute(query).scalars().first()
