@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.routers import route_produto, route_auth, route_pedido
+from src.routers import route_auth, route_pedido, route_produto
 
 app = FastAPI()
 

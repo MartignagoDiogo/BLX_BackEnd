@@ -1,11 +1,12 @@
 from fastapi import status, APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from infra.Providers import token_provider
+from src.infra.Providers import token_provider
 from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
 from src.infra.sqlalchemy.config.database import get_db
 from src.schemas.schemas import Usuario, UsuarioSimples, LoginData
 from src.infra.Providers import hash_provider
+from src.routers.auth_utils import obter_usuario_logado
 
 route = APIRouter()
 
@@ -35,7 +36,7 @@ def login(login_data: LoginData, session: Session = Depends(get_db)):
     
     #Gerar o token JWT
     token = token_provider.criar_acess_token({'sub': usuario.telefone})
-    return {'usuario': usuario, 'acess token': token}
+    return {'usuario': usuario, 'access_token': token}
 
 @route.get('/usuarios', status_code=status.HTTP_200_OK, response_model=List[UsuarioSimples])
 def listar_usuarios(session: Session = Depends(get_db)):
@@ -48,3 +49,8 @@ def exibir_usuario(id: int, session: Session = Depends(get_db)):
     if not usuario_localizado:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'não existe o usuario com o id = {id}')
     return usuario_localizado
+
+@route.get('/me', response_model=UsuarioSimples)
+def me(usuario: Usuario = Depends(obter_usuario_logado)):
+    #decodificar o token, pegar o telefone, buscar user no BD retornar
+    return usuario

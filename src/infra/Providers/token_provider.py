@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import timedelta, datetime
+from jose import jwt
 
 
 #CONFIG 
@@ -8,7 +9,14 @@ EXPIRES_IN_MIN = 3000
 
 
 def criar_acess_token(data: dict):
-    return 'hauahuaha'
+    dados = data.copy()
+    expiracao = datetime.utcnow() + timedelta(EXPIRES_IN_MIN)
+    
+    dados.update({'exp': expiracao})
+    
+    token_jwt = jwt.encode(dados, SECRET_KEY, algorithm=ALGORITHM)
+    return token_jwt
 
 def verificar_acess_token(token: str):
-    return '48 99988774455'
+    carga = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    return carga.get('sub')
