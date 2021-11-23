@@ -7,19 +7,24 @@ from src.infra.sqlalchemy.config.database import get_db
 from src.infra.Providers import  token_provider
 from jose import JWTError
 from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
-
 from src.schemas.schemas import Usuario
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl='token')
 
 def obter_usuario_logado(token: str = Depends(oauth2_schema), session: Session = Depends(get_db)):
+    
+    exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token invalido')
     try:
-        telefone = token_provider.verificar_acess_token(token)
+        telefone: str = token_provider.verificar_acess_token(token)
     except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token invalido')
+            raise exception
+        
     if not telefone:
-        raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED, detail='Token invalido')
+        raise exception
+    
     usuario = RepositorioUsuario(session).obter_por_telefone(telefone)
+    
     if not usuario:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Token invalido')
+        raise exception
+    
     return usuario

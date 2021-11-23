@@ -29,10 +29,10 @@ class RepositorioUsuario():
         usuarios = self.session.execute(stmt).scalars().all()
         return usuarios
     
-    def buscarPorId(self, id: int):
-        consulta= select(models.Usuario).where(models.Usuario.id == id)   
-        usuario= self.session.execute(consulta).first()
-        return usuario  
+    def buscarPorId(self, id: int) -> models.Usuario:
+        consulta = select(models.Usuario).where(models.Usuario.id == id)   
+        return self.session.execute(consulta).scalars().first()
+          
     
     def obter_por_telefone(self, telefone) -> models.Usuario:
         query =  select(models.Usuario).where(models.Usuario.telefone == telefone)

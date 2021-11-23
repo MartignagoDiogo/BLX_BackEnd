@@ -43,11 +43,11 @@ def listar_usuarios(session: Session = Depends(get_db)):
     usuario = RepositorioUsuario(session).listar()
     return usuario
 
-@route.get('/usuarios/{id}')
+@route.get('/usuarios/{id}', response_model=UsuarioSimples)
 def exibir_usuario(id: int, session: Session = Depends(get_db)):
     usuario_localizado = RepositorioUsuario(session).buscarPorId(id)
     if not usuario_localizado:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'não existe o usuario com o id = {id}')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f'não existe o usuario com o id = {id}')
     return usuario_localizado
 
 @route.get('/me', response_model=UsuarioSimples)
