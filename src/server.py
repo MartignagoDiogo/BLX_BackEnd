@@ -1,8 +1,9 @@
-from fastapi import FastAPI, requests
+from fastapi import FastAPI, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import responses
 from starlette.requests import Request
 from src.routers import route_auth, route_pedido, route_produto
+from src.jobs.write_notification import write_notification
 
 app = FastAPI()
 
@@ -35,6 +36,13 @@ async def processar_tempo_requisicao(request: Request, next):
     
     return response 
     
+
+#Rota 
+@app.post('/send_email/{email}')
+def send_email(email: str, background: BackgroundTasks):
+    background.add_task(write_notification, email, 'deu certo?')
+    
+    return {'ok': 'Foi a msg?'}
 
 #Roters Produto
 
